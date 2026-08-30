@@ -1723,26 +1723,7 @@ The final architecture provides Home Assistant with unified access to Nest devic
 
 ## Related Search Keywords
 
-**Home Assistant Nest**  
-**Home Assistant OS Google Nest**  
-**HAOS Nest integration**  
-**Google Nest Device Access**  
-**Google Smart Device Management API**  
-**SDM API Home Assistant**  
-**Google Nest OAuth Home Assistant**  
-**Google Cloud Pub/Sub Home Assistant**  
-**Nest camera Home Assistant**  
-**Nest thermostat Home Assistant**  
-**Nest camera livestream HAOS**  
-**Nest camera events HAOS**  
-**Nest camera snapshots Home Assistant**  
-**Google OAuth test user Home Assistant**  
-**home-assistant.io OAuth redirect**  
-**My Home Assistant redirect**  
-**Home Assistant local FQDN**  
-**Home Assistant segmented network**  
-**Nest Device Access Pub/Sub topic**  
-**Nest Pub/Sub subscription**  
+home-assistant, google-nest, haos, nest-device-access, sdm-api, google-cloud-pubsub, oauth2, smart-home, home-automation, nest-camera, nest-thermostat, segmented-network
 
 ---
 
