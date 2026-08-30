@@ -9,7 +9,11 @@ Copyright (c) 2026 Fong
 
 `projectfong/docs` is a public-safe technical documentation repository covering systems architecture, virtualization, networking, endpoint management, smart home infrastructure, and operational maintenance.
 
-The repository documents implementation decisions, configuration procedures, troubleshooting, validation, and lessons learned while removing private addressing, credentials, internal identifiers, and other environment-specific information. Documentation follows established cybersecurity frameworks and best practices, including concepts found in NIST SP 800-171, with an emphasis on secure design, segmentation, validation, reproducibility, and operational understanding.
+The repository documents implementation decisions, configuration procedures, troubleshooting, validation, and lessons learned while removing private addressing, credentials, internal identifiers, and other environment-specific information.
+
+Documentation emphasizes secure design, segmentation, validation, reproducibility, and operational understanding.
+
+---
 
 ## Purpose
 
@@ -28,11 +32,11 @@ Documentation is intended to:
 
 This repository contains documentation and reference material. Individual projects, scripts, configurations, or software may be maintained in separate repositories.
 
-Next Step: Browse the documentation tree below to locate the relevant technical area.
-
 ---
 
-## Documentation Structure
+## Planned Documentation Structure
+
+The repository is organized by technical domain as documentation is added.
 
 ```text
 docs/
@@ -50,6 +54,10 @@ docs/
 │   └── screenshots/
 └── README.md
 ```
+
+Not every planned directory may be populated yet.
+
+Directories are created as documentation for each technical area is completed and prepared for public release.
 
 ### `architecture/`
 
@@ -126,10 +134,13 @@ Topics may include:
 * Home Assistant OS
 * Home Assistant
 * Matter
+* Thread
+* OpenThread Border Router
 * ESPHome
 * ESP32
 * IoT network segmentation
 * Cross-VLAN communication
+* mDNS and service discovery
 * Voice satellites
 * Repurposed hardware
 * Local voice processing
@@ -168,8 +179,6 @@ Sanitized screenshots used by documentation belong under `assets/screenshots/`.
 
 Documentation-specific assets may instead be stored near the document that uses them when doing so improves organization.
 
-Validation Result: The repository separates documentation by operational domain while maintaining shared locations for reusable visual material.
-
 ---
 
 ## Documentation Approach
@@ -197,7 +206,19 @@ Where applicable, a technical guide should document:
 
 This provides enough context to reproduce an implementation without relying on undocumented knowledge from the original environment.
 
-Next Step: Review the applicable document's requirements and architecture sections before beginning an implementation.
+The objective is not simply to record commands.
+
+The objective is to preserve enough engineering context to explain:
+
+```text
+What was built?
+Why was it built this way?
+What failed?
+Why did it fail?
+How was the failure identified?
+What corrected it?
+How was the final implementation validated?
+```
 
 ---
 
@@ -213,10 +234,17 @@ Examples include:
 
 * Public IP addresses associated with private infrastructure
 * Actual private network addressing
+* Internal IPv4 and IPv6 prefixes
+* Internal host addresses
 * Internal hostnames
 * Internal DNS domains
 * Device serial numbers
+* USB serial identifiers
 * MAC addresses
+* Hardware-derived identifiers
+* Thread network credentials
+* Thread network identifiers when unnecessarily environment-specific
+* Matter setup credentials
 * Usernames
 * Email addresses
 * Authentication tokens
@@ -228,6 +256,7 @@ Examples include:
 * Wireless credentials
 * Organization-specific identifiers
 * Internal firewall object names when they disclose architecture
+* Internal firewall interface names when unnecessary
 * Screenshots containing sensitive environment information
 
 Sanitization should preserve the technical meaning of an example.
@@ -244,6 +273,19 @@ RFC 5737 reserves the following IPv4 networks for documentation:
 
 These ranges allow network examples to remain technically meaningful without publishing operational addresses.
 
+For values that cannot be represented cleanly using documentation addressing, descriptive placeholders may be used.
+
+Examples:
+
+```text
+<HA_IPV6_PREFIX>
+<IOT_IPV6_PREFIX>
+<THREAD_OMR_PREFIX>
+<SERVER_IPV6>
+<FIREWALL_INTERFACE>
+<DEVICE_ID>
+```
+
 ### Sanitization Principle
 
 A sanitized document should still answer:
@@ -252,15 +294,13 @@ A sanitized document should still answer:
 What connects to what?
 Why is the connection required?
 Which protocol is used?
-Which port is required?
+Which port or service behavior is required?
 Which direction does traffic flow?
 Which security boundary is crossed?
 How can the configuration be validated?
 ```
 
 Removing sensitive information should not remove the engineering logic needed to understand the implementation.
-
-Validation Result: Public examples retain their architectural meaning without exposing operational environment details.
 
 ---
 
@@ -284,11 +324,9 @@ Depending on the system being documented, this may include:
 * Failure behavior
 * Reduced external trust dependencies
 
-Documentation may reference established cybersecurity frameworks and best practices, including relevant NIST SP 800-171 concepts, when those concepts help explain an architectural decision.
+Documentation may reference established security frameworks or industry guidance when those concepts help explain an architectural decision.
 
-Such references describe engineering principles and design considerations. They do not represent certification or a compliance claim for systems documented in this public repository.
-
-Next Step: Validate security-sensitive examples during sanitization before committing them to the public repository.
+Such references describe engineering principles and design considerations. They do not represent certification, formal assessment, or a compliance claim for systems documented in this public repository.
 
 ---
 
@@ -316,8 +354,6 @@ The surrounding documentation should explain the command rather than expecting t
 Destructive or environment-specific commands require additional explanation before execution.
 
 Configuration examples should use sanitized values while remaining syntactically valid whenever possible.
-
-Validation Result: Commands and configuration examples are documented with enough context to understand both execution and verification.
 
 ---
 
@@ -349,8 +385,6 @@ Where practical, expected results should accompany validation commands.
 
 A successful validation should demonstrate that the intended system behavior works rather than only confirming that configuration syntax was accepted.
 
-Next Step: Complete all documented validation procedures before treating an implementation as operational.
-
 ---
 
 ## Troubleshooting Documentation
@@ -371,9 +405,42 @@ Failed approaches may be included when they explain an important limitation or p
 
 Unrelated experimentation is excluded from the final public guide.
 
-The objective is not to preserve every action taken during experimentation. The objective is to preserve the information required to understand how the working implementation was reached.
+The objective is not to preserve every action taken during experimentation.
 
-Validation Result: Troubleshooting history documents technically relevant failures without overwhelming the final implementation procedure.
+The objective is to preserve the information required to understand how the working implementation was reached.
+
+### Follow the Evidence
+
+When troubleshooting networking or distributed systems, validation should occur at each relevant layer rather than assuming that one successful component proves the complete path.
+
+Examples may include:
+
+```text
+Physical / radio connectivity
+        |
+        v
+Link or interface state
+        |
+        v
+IP addressing
+        |
+        v
+Routing
+        |
+        v
+Firewall policy
+        |
+        v
+Service discovery
+        |
+        v
+Application protocol
+        |
+        v
+Application behavior
+```
+
+Packet captures, logs, routing tables, firewall debug output, and service state should be preferred over assumptions when identifying a failure.
 
 ---
 
@@ -394,8 +461,6 @@ The diagram shows the management, trusted client, server, and IoT network segmen
 ```
 
 This keeps important architectural information searchable and understandable when the image is unavailable.
-
-Next Step: Review every screenshot and diagram for identifying information before publication.
 
 ---
 
@@ -436,15 +501,14 @@ Before publication:
 1. Confirm that the documented implementation actually worked.
 2. Remove unrelated experimentation.
 3. Preserve troubleshooting that materially contributed to the solution.
-4. Replace environment-specific values with safe examples.
+4. Replace environment-specific values with safe examples or descriptive placeholders.
 5. Review commands for destructive or environment-specific behavior.
 6. Verify links and references.
 7. Review screenshots and diagrams.
 8. Confirm that no credentials or secrets are present.
-9. Confirm that the sanitized procedure remains technically reproducible.
-10. Commit the reviewed documentation.
-
-Validation Result: Documentation reaches the public repository only after technical validation and sanitization.
+9. Review addressing, identifiers, hostnames, serial values, and other environment-specific information.
+10. Confirm that the sanitized procedure remains technically reproducible.
+11. Commit the reviewed documentation.
 
 ---
 
@@ -468,30 +532,19 @@ The `docs` repository can continue to contain architectural or operational docum
 
 This keeps the repository useful as a centralized technical knowledge base without forcing unrelated source code into the same project.
 
-Next Step: Create dedicated repositories when a documented system becomes an independently maintained software or hardware project.
-
 ---
 
 ## Search Keywords
 
 Related technical terms used throughout this repository may include:
 
-**Systems Architecture**, **Homelab**, **Infrastructure**, **Network Architecture**, **Network Segmentation**, **VLAN**, **Firewall**, **FortiGate**, **Routing**, **DNS**, **DHCP**, **mDNS**, **Proxmox VE**, **KVM**, **ZFS**, **Windows 11**, **Linux**, **Home Assistant**, **HAOS**, **Matter**, **ESPHome**, **ESP32**, **IoT**, **Smart Home**, **Voice Satellite**, **Disaster Recovery**, **Backup**, **Runbook**, **Cybersecurity**, **NIST SP 800-171**, **Zero Trust**, **Technical Documentation**, **Troubleshooting**, **Validation**, **Sanitization**
-
----
-
-## Distribution and Copyright
-
-Copyright (c) 2026 Fong.
-
-Permission is granted to redistribute this documentation in its original, unmodified form, provided appropriate credit is given to projectfong and a link to the projectfong GitHub page is included:
-
-https://github.com/projectfong/
+**Systems Architecture**, **Homelab**, **Infrastructure**, **Network Architecture**, **Network Segmentation**, **VLAN**, **Firewall**, **FortiGate**, **Routing**, **IPv4**, **IPv6**, **DNS**, **DHCP**, **mDNS**, **Proxmox VE**, **KVM**, **ZFS**, **Windows 11**, **Linux**, **Home Assistant**, **HAOS**, **Matter**, **Matter-over-Wi-Fi**, **Matter-over-Thread**, **Thread**, **OpenThread**, **OTBR**, **ESPHome**, **ESP32**, **IoT**, **Smart Home**, **Voice Satellite**, **Disaster Recovery**, **Backup**, **Runbook**, **Cybersecurity**, **Zero Trust**, **Technical Documentation**, **Troubleshooting**, **Validation**, **Sanitization**
 
 ---
 
 ## Revision Control
 
-| Version   | Date       | Summary                                                                                         | Author      |
-| --------- | ---------- | ----------------------------------------------------------------------------------------------- | ----------- |
+| Version | Date | Summary | Author |
+| --- | --- | --- | --- |
 | **1.0.0** | 2026-08-23 | Initial publication of `README.md` and baseline documentation structure for `projectfong/docs`. | projectfong |
+| **1.1.0** | 2026-08-30 | Refined repository scope and documentation philosophy, clarified the planned directory structure, expanded public-safe sanitization guidance, added IPv6 and identifier redaction practices, and simplified security-framework language. | projectfong |
