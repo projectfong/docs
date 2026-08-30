@@ -7,15 +7,15 @@ Copyright (c) 2026 Fong
 
 ## Summary
 
-This document describes the implementation of Matter-over-Wi-Fi with Home Assistant across a segmented network, where Matter devices reside on an isolated IoT SSID while Home Assistant resides on a separate trusted network. The architecture preserves Layer 3 segmentation while adding internal IPv6, Matter routing, and controlled mDNS reflection. The design follows established cybersecurity frameworks and best practices, including concepts from NIST SP 800-171, with emphasis on segmentation, least-privilege traffic flows, secure design, and independent validation.
+This document describes the implementation of Matter-over-Wi-Fi with Home Assistant across a segmented network, where Matter devices reside on an isolated IoT SSID while Home Assistant resides on a separate trusted network.
 
-This is a sanitized version intended for documentation, public repositories, Wiki.js, Gitea, and other locations where production addressing and infrastructure identifiers should not be disclosed.
+The architecture preserves Layer 3 segmentation while adding internal IPv6, Matter routing, and controlled mDNS reflection. The design follows established cybersecurity frameworks and best practices, including concepts from NIST SP 800-171, with emphasis on segmentation, least-privilege traffic flows, secure design, and independent validation.
 
-All network addresses and hardware-specific identifiers shown below are documentation examples and do not represent the production environment.
+All network addresses and hardware-specific identifiers shown in this document are documentation examples and do not represent the production environment. Standard documentation addressing and generalized infrastructure identifiers are used throughout the examples.
 
 ---
 
-# 1. Scope
+## Scope
 
 This document begins with the Matter implementation on the existing Home Assistant OS installation.
 
@@ -28,7 +28,7 @@ Covered components include:
 | Home Assistant OS | Main automation platform                                    |
 | Matter Server     | Home Assistant Matter controller                            |
 | FortiGate         | Routing, firewalling, IPv6 RA/SLAAC, and FortiAP management |
-| `iot-matter`      | Sanitized name for the isolated IoT Wi-Fi SSID              |
+| `iot-matter`      | Documentation name for the isolated IoT Wi-Fi SSID          |
 | `vm-avahi`        | Dedicated mDNS reflector                                    |
 | USB Wi-Fi adapter | Direct Layer 2 interface from `vm-avahi` to the IoT SSID    |
 | Matter bulb       | Matter-over-Wi-Fi endpoint                                  |
@@ -38,7 +38,7 @@ Validation Result: The documented architecture successfully supports Matter comm
 
 ---
 
-# 2. Sanitization Reference
+## Sanitization Reference
 
 The following documentation-only addressing is used throughout this document.
 
@@ -58,11 +58,11 @@ The following documentation-only addressing is used throughout this document.
 
 Hardware MAC addresses, BSSIDs, device-specific IPv6 interface identifiers, phone addresses, and other unnecessary infrastructure identifiers have been removed or generalized.
 
-Next Step: Substitute local production values only in private operational documentation.
+Replace documentation values with deployment-specific values only where appropriate for the target environment.
 
 ---
 
-# 3. Final Architecture
+## Architecture
 
 The existing IPv4 architecture remains intact.
 
@@ -103,9 +103,9 @@ Validation Result: The reflector is dual-homed without creating an alternate Lay
 
 ---
 
-# 4. Network Addressing
+## Network Addressing
 
-## 4.1 Home Assistant Network
+### Home Assistant Network
 
 ```text
 Network:       192.0.2.0/24
@@ -114,7 +114,7 @@ vm-avahi:      192.0.2.55
 Gateway:       192.0.2.1
 ```
 
-## 4.2 IoT Network
+### IoT Network
 
 ```text
 SSID:          iot-matter
@@ -127,7 +127,7 @@ Validation Result: Home Assistant and Matter devices remain on separate IPv4 net
 
 ---
 
-# 5. IPv6 ULA Design
+## IPv6 ULA Design
 
 Matter requires usable local IPv6 connectivity.
 
@@ -139,7 +139,7 @@ fd42:1234:5678::/48
 
 The relevant networks receive separate `/64` prefixes.
 
-## 5.1 Home Assistant Network
+### Home Assistant Network
 
 ```text
 fd42:1234:5678:10::/64
@@ -151,7 +151,7 @@ FortiGate:
 fd42:1234:5678:10::1/64
 ```
 
-## 5.2 IoT Network
+### IoT Network
 
 ```text
 fd42:1234:5678:20::/64
@@ -180,7 +180,7 @@ Validation Result: Matter receives routable internal IPv6 without requiring publ
 
 ---
 
-# 6. Example IPv6 Addresses
+## Example IPv6 Addresses
 
 Exact production interface identifiers are intentionally omitted.
 
@@ -206,7 +206,7 @@ Actual SLAAC addresses normally contain interface-specific host portions and sho
 
 ---
 
-# 7. Initial Matter Problem
+## Initial Matter Problem
 
 The Matter bulb could join the IoT SSID, but Home Assistant commissioning failed.
 
@@ -234,7 +234,7 @@ This indicated that Wi-Fi association alone was not sufficient to prove end-to-e
 
 ---
 
-# 8. FortiAP Intra-SSID Isolation Problem
+## FortiAP Intra-SSID Isolation Problem
 
 The IoT SSID had client isolation enabled.
 
@@ -250,11 +250,11 @@ Android Commissioner
 
 Both devices were associated with the same SSID, but intra-SSID isolation prevented the required local communication.
 
-## Cause
+### Cause
 
 FortiAP client isolation intentionally prevents wireless clients on the same SSID from communicating directly.
 
-## Fix
+### Fix
 
 Temporarily disable FortiAP intra-SSID/client isolation during Matter commissioning.
 
@@ -264,7 +264,7 @@ Validation Result: Local commissioner-to-device communication succeeds after rem
 
 ---
 
-# 9. Why IPv6 Was Required
+## Why IPv6 Was Required
 
 The existing environment was primarily IPv4.
 
@@ -285,7 +285,7 @@ This provides Matter with routable IPv6 while leaving the existing IPv4 architec
 
 ---
 
-# 10. FortiGate IPv6 Features
+## FortiGate IPv6 Features
 
 The relevant FortiGate features include:
 
@@ -303,9 +303,9 @@ Next Step: Configure IPv6 addressing and Router Advertisements on the two Matter
 
 ---
 
-# 11. FortiGate SLAAC Configuration
+## FortiGate SLAAC Configuration
 
-## 11.1 IoT Interface
+### IoT Interface
 
 Example IPv4 configuration:
 
@@ -337,7 +337,7 @@ DHCPv6:
 Disabled
 ```
 
-Example sanitized FortiGate configuration:
+Example FortiGate configuration using documentation addressing:
 
 ```text
 config system interface
@@ -374,7 +374,7 @@ Validation Result: The IoT segment advertises the internal Matter IPv6 prefix us
 
 ---
 
-# 12. Home Assistant Network SLAAC
+## Home Assistant Network SLAAC
 
 The HA network receives:
 
@@ -396,7 +396,7 @@ Run:
 network info
 ```
 
-Expected sanitized output:
+Expected documentation output:
 
 ```text
 ipv6:
@@ -413,7 +413,7 @@ Validation Result: `method: auto` and `ready: true` confirm that SLAAC is operat
 
 ---
 
-# 13. Matter Firewall Policy
+## Matter Firewall Policy
 
 Matter traffic is restricted instead of allowing arbitrary communication between networks.
 
@@ -430,7 +430,7 @@ Home Assistant frontend/API access remains separate:
 TCP 8123
 ```
 
-## 13.1 HAOS to IoT
+### HAOS to IoT
 
 The IPv6 policy permits:
 
@@ -448,7 +448,7 @@ NAT:
 OFF
 ```
 
-## 13.2 IoT to HAOS
+### IoT to HAOS
 
 The reverse Matter policy permits:
 
@@ -470,7 +470,7 @@ Validation Result: Matter receives the required routed service without introduci
 
 ---
 
-# 14. IPv6 Routing Validation
+## IPv6 Routing Validation
 
 Before troubleshooting mDNS, IPv6 routing should be tested independently.
 
@@ -490,7 +490,7 @@ This test is important because it separates ordinary IPv6 routing problems from 
 
 ---
 
-# 15. Matter Server Log Analysis
+## Matter Server Log Analysis
 
 Matter Server logs provide critical evidence during troubleshooting.
 
@@ -508,11 +508,11 @@ Next Step: Review commissioning logs and identify exactly which Matter stage fai
 
 ---
 
-# 16. Initial Matter Communication
+## Initial Matter Communication
 
 During troubleshooting, Matter Server receives an operational endpoint from Android.
 
-Sanitized example:
+Example using documentation addressing:
 
 ```text
 Operational address for undefined set to udp://198.51.100.<device>:5540
@@ -557,7 +557,7 @@ Therefore, a subsequent failure is not automatically evidence of basic firewall 
 
 ---
 
-# 17. Operational Reconnect Failure
+## Operational Reconnect Failure
 
 Immediately afterward Matter Server enters the reconnect phase.
 
@@ -586,7 +586,7 @@ Validation Result: Credential provisioning succeeds, but operational service dis
 
 ---
 
-# 18. Root Cause: Matter Operational mDNS Discovery
+## Root Cause: Matter Operational mDNS Discovery
 
 After Matter credentials are installed, the device transitions into normal operational discovery.
 
@@ -627,17 +627,17 @@ Operational mDNS discovery                 FAIL
 Operational reconnect                      FAIL
 ```
 
-## Cause
+### Cause
 
 Routed IPv4/IPv6 connectivity does not automatically forward link-local mDNS discovery across Layer 3 boundaries.
 
-## Fix
+### Fix
 
 Deploy a dedicated mDNS reflector with direct presence on both relevant Layer 2 networks.
 
 ---
 
-# 19. Why FortiGate Multicast Routing Was Not the Fix
+## Why FortiGate Multicast Routing Was Not the Fix
 
 mDNS uses:
 
@@ -672,7 +672,7 @@ Validation Result: Routing and service discovery remain separate functions with 
 
 ---
 
-# 20. vm-avahi
+## vm-avahi
 
 A dedicated Debian VM is created on Proxmox.
 
@@ -697,7 +697,7 @@ USB Wi-Fi -> IoT Matter SSID
 
 ---
 
-# 21. Why 2 GiB RAM Was Used
+## Why 2 GiB RAM Was Used
 
 The VM initially receives:
 
@@ -713,11 +713,11 @@ Any resource reduction should be validated before considering the configuration 
 
 ---
 
-# 22. USB Wi-Fi Passthrough
+## USB Wi-Fi Passthrough
 
 A USB Wi-Fi adapter is passed directly into the Avahi VM through Proxmox.
 
-Sanitized topology:
+Topology:
 
 ```text
 Proxmox host
@@ -739,7 +739,7 @@ Validation Result: The VM receives direct Layer 2 presence on the isolated wirel
 
 ---
 
-# 23. Debian Installer IPv6 Problem
+## Debian Installer IPv6 Problem
 
 During Debian installation, the installer may detect the IPv6 SLAAC address and conclude that networking is configured.
 
@@ -759,11 +759,11 @@ IPv6 Internet:           NO
 IPv4 configuration:      MISSING
 ```
 
-## Cause
+### Cause
 
 Successful local SLAAC does not imply IPv6 Internet reachability.
 
-## Fix
+### Fix
 
 Return to the Debian network configuration screen and manually configure IPv4.
 
@@ -771,7 +771,7 @@ Once IPv4 is configured correctly, package installation can proceed normally.
 
 ---
 
-# 24. HA-Side Interface
+## HA-Side Interface
 
 The VirtIO interface becomes:
 
@@ -787,7 +787,7 @@ Gateway: 192.0.2.1
 IPv6:    SLAAC
 ```
 
-Expected sanitized state:
+Expected documentation state:
 
 ```text
 ens18 UP
@@ -806,7 +806,7 @@ Validation Result: The trusted-side interface remains the VM's default routed pa
 
 ---
 
-# 25. USB Wi-Fi Driver Failure
+## USB Wi-Fi Driver Failure
 
 Initially Debian may load an older staging driver for the USB Wi-Fi adapter.
 
@@ -836,7 +836,7 @@ This means Linux created a network interface but did not expose a usable cfg8021
 
 ---
 
-# 26. wpa_supplicant Failure
+## wpa_supplicant Failure
 
 An association attempt using nl80211 may produce:
 
@@ -846,17 +846,17 @@ nl80211: Driver does not support authentication/association or connect commands
 
 Trying a legacy backend may also fail.
 
-## Cause
+### Cause
 
 The loaded kernel driver does not expose the wireless capabilities required by `wpa_supplicant`.
 
-## Fix
+### Fix
 
 Correct the driver/kernel problem before changing Wi-Fi credentials or firewall configuration.
 
 ---
 
-# 27. Kernel Driver Hang
+## Kernel Driver Hang
 
 Kernel logs may show driver threads becoming blocked or command execution failures.
 
@@ -871,7 +871,7 @@ These symptoms implicate the kernel wireless driver rather than the Wi-Fi passwo
 
 ---
 
-# 28. Alternate Driver Attempt
+## Alternate Driver Attempt
 
 A compatible in-kernel wireless driver can be tested after unloading the problematic staging driver.
 
@@ -896,7 +896,7 @@ Validation Result: Do not proceed with Wi-Fi configuration until a functional dr
 
 ---
 
-# 29. Debian Bookworm Backports Fix
+## Debian Bookworm Backports Fix
 
 Bookworm backports can provide a newer kernel and Realtek firmware.
 
@@ -930,7 +930,7 @@ Validation Result: Confirm the new kernel is active before continuing.
 
 ---
 
-# 30. Wireless Driver Validation
+## Wireless Driver Validation
 
 After the kernel upgrade, verify driver binding:
 
@@ -978,7 +978,7 @@ Validation Result: A visible PHY confirms that the kernel wireless stack is now 
 
 ---
 
-# 31. Wi-Fi Interface
+## Wi-Fi Interface
 
 The adapter receives a predictable or hardware-derived Linux interface name.
 
@@ -1000,7 +1000,7 @@ to identify the actual interface before creating systemd services.
 
 ---
 
-# 32. wpa_supplicant Configuration
+## wpa_supplicant Configuration
 
 Create:
 
@@ -1035,11 +1035,11 @@ Protect the configuration:
 chmod 600 /etc/wpa_supplicant/wpa_supplicant-iot.conf
 ```
 
-Validation Result: The Wi-Fi credential remains locally protected and is not embedded in public documentation.
+Validation Result: The Wi-Fi credential remains locally protected and is not embedded in shared documentation.
 
 ---
 
-# 33. Missing Network Block Problem
+## Missing Network Block Problem
 
 Check configured networks:
 
@@ -1062,17 +1062,17 @@ network={
 
 block.
 
-## Cause
+### Cause
 
 The control configuration alone does not define a Wi-Fi network.
 
-## Fix
+### Fix
 
 Add the intended SSID and PSK inside the `network={}` block.
 
 ---
 
-# 34. Duplicate wpa_supplicant Problem
+## Duplicate wpa_supplicant Problem
 
 Repeated errors similar to:
 
@@ -1082,11 +1082,11 @@ nl80211: kernel reports: Match already configured
 
 can occur when multiple `wpa_supplicant` instances contend for the same interface.
 
-## Cause
+### Cause
 
 More than one supplicant process is managing the adapter.
 
-## Fix
+### Fix
 
 Stop the duplicate instance before launching the dedicated configuration.
 
@@ -1094,7 +1094,7 @@ Validation Result: Exactly one intended `wpa_supplicant` instance should manage 
 
 ---
 
-# 35. Successful Wi-Fi Association
+## Successful Wi-Fi Association
 
 Verify configured networks:
 
@@ -1129,7 +1129,7 @@ Validation Result: `[CURRENT]` and `Connected` confirm successful Layer 2 associ
 
 ---
 
-# 36. Automatic Wi-Fi Startup
+## Automatic Wi-Fi Startup
 
 Create:
 
@@ -1190,7 +1190,7 @@ Validation Result: Wi-Fi association persists across VM reboots.
 
 ---
 
-# 37. IoT DHCP
+## IoT DHCP
 
 Request an IPv4 lease:
 
@@ -1198,7 +1198,7 @@ Request an IPv4 lease:
 dhclient -v <wifi-interface>
 ```
 
-Sanitized expected sequence:
+Expected sequence using documentation addressing:
 
 ```text
 DHCPOFFER of 198.51.100.57 from 198.51.100.1
@@ -1215,7 +1215,7 @@ These addresses are documentation examples only.
 
 ---
 
-# 38. Long DHCP Lease Behavior
+## Long DHCP Lease Behavior
 
 A DHCP server can return an extremely long lease duration.
 
@@ -1229,7 +1229,7 @@ Validation Result: Use a reservation rather than publishing or hard-coding a har
 
 ---
 
-# 39. Automatic DHCP
+## Automatic DHCP
 
 Wi-Fi association alone does not restore IPv4 after reboot.
 
@@ -1268,9 +1268,9 @@ Validation Result: Both Layer 2 association and IPv4 configuration automatically
 
 ---
 
-# 40. Final vm-avahi Addressing
+## Final vm-avahi Addressing
 
-Expected sanitized addressing:
+Expected documentation addressing:
 
 ```text
 ens18
@@ -1296,7 +1296,7 @@ Validation Result: Management/default traffic remains on the trusted-side interf
 
 ---
 
-# 41. Disable Routing on vm-avahi
+## Disable Routing on vm-avahi
 
 Because the VM is dual-homed, it must not become an alternate router between the networks.
 
@@ -1342,7 +1342,7 @@ Validation Result: The dual-homed VM cannot function as a normal IPv4 or IPv6 ro
 
 ---
 
-# 42. Avahi Installation
+## Avahi Installation
 
 Install:
 
@@ -1361,7 +1361,7 @@ Next Step: Restrict Avahi to the two interfaces required for Matter discovery.
 
 ---
 
-# 43. Avahi Configuration
+## Avahi Configuration
 
 File:
 
@@ -1411,7 +1411,7 @@ Validation Result: mDNS reflection is limited to the trusted HA segment and isol
 
 ---
 
-# 44. Start Avahi
+## Start Avahi
 
 Restart:
 
@@ -1427,11 +1427,11 @@ systemctl status avahi-daemon --no-pager
 
 Expected behavior includes detection of the HA and IoT interfaces for mDNS.
 
-Production addresses should not be copied into public documentation.
+Deployment-specific addresses should be reviewed before copying command output into shared documentation.
 
 ---
 
-# 45. UDP 5353 Validation
+## UDP 5353 Validation
 
 Run:
 
@@ -1450,7 +1450,7 @@ Validation Result: Avahi is listening for mDNS over IPv4 and IPv6.
 
 ---
 
-# 46. IoT mDNS Discovery Validation
+## IoT mDNS Discovery Validation
 
 Run:
 
@@ -1466,7 +1466,7 @@ Example service categories may include:
 _esphomelib._tcp
 ```
 
-Device names should be redacted before publishing logs because hostnames can reveal hardware roles, naming conventions, or internal asset information.
+Device names should be reviewed before publishing logs because hostnames can reveal hardware roles, naming conventions, or internal asset information.
 
 The successful path is:
 
@@ -1488,7 +1488,7 @@ Validation Result: The reflector receives multicast DNS directly from the isolat
 
 ---
 
-# 47. Matter DNS-SD Validation
+## Matter DNS-SD Validation
 
 Check Matter-specific discovery:
 
@@ -1523,7 +1523,7 @@ Validation Result: Matter commissioning and operational DNS-SD advertisements ex
 
 ---
 
-# 48. Home Assistant Matter Server mDNS
+## Home Assistant Matter Server mDNS
 
 Verify that Home Assistant Matter Server reports:
 
@@ -1537,7 +1537,7 @@ The missing component in a segmented topology is therefore the controlled transp
 
 ---
 
-# 49. Final Commissioning
+## Final Commissioning
 
 After Avahi reflection is operational, commission the Matter device again.
 
@@ -1568,7 +1568,7 @@ CONNECTED
 
 ---
 
-# 50. Why the Final Architecture Works
+## Why the Final Architecture Works
 
 The complete commissioning sequence is:
 
@@ -1622,9 +1622,9 @@ Validation Result: mDNS reflection supplies the missing discovery path without r
 
 ---
 
-# 51. Security Properties
+## Security Properties
 
-## 51.1 IoT Isolation
+### IoT Isolation
 
 Matter devices remain on:
 
@@ -1634,7 +1634,7 @@ iot-matter
 
 They are not moved onto the trusted Home Assistant network.
 
-## 51.2 FortiGate Remains the Router
+### FortiGate Remains the Router
 
 `vm-avahi` does not route packets.
 
@@ -1643,11 +1643,11 @@ IPv4 forwarding = 0
 IPv6 forwarding = 0
 ```
 
-## 51.3 No NAT on vm-avahi
+### No NAT on vm-avahi
 
 The reflector performs no address translation.
 
-## 51.4 Restricted Avahi Interfaces
+### Restricted Avahi Interfaces
 
 Avahi listens only on:
 
@@ -1656,7 +1656,7 @@ ens18
 <wifi-interface>
 ```
 
-## 51.5 Restricted Matter Firewall Service
+### Restricted Matter Firewall Service
 
 Matter traffic is restricted to:
 
@@ -1667,13 +1667,13 @@ UDP 5540
 
 rather than permitting unrestricted inter-network traffic.
 
-## 51.6 Internet Access
+### Internet Access
 
 The Matter device does not require general Internet connectivity for normal local Home Assistant operation.
 
-## 51.7 Information Disclosure
+### Information Disclosure
 
-Public documentation should not contain:
+Shared documentation should not contain deployment-specific values such as:
 
 ```text
 Production IPv4 addresses
@@ -1695,7 +1695,7 @@ Validation Result: The architecture preserves network segmentation while minimiz
 
 ---
 
-# 52. Proxmox Backup
+## Proxmox Backup
 
 A Proxmox backup should be taken after Debian networking and USB Wi-Fi driver issues are resolved and before or after final Avahi configuration as appropriate.
 
@@ -1710,7 +1710,7 @@ Avahi configuration
 systemd Wi-Fi services
 ```
 
-Production VM IDs, backup storage names, archive names, and infrastructure paths should not be included in public documentation unless required.
+Deployment-specific VM IDs, backup storage names, archive names, and infrastructure paths should not be included in shared documentation unless required.
 
 Validation Result:
 
@@ -1720,7 +1720,7 @@ TASK OK
 
 ---
 
-# 53. Boot Sequence
+## Boot Sequence
 
 The expected startup sequence is:
 
@@ -1767,29 +1767,29 @@ Validation Result: Wireless connectivity, IP addressing, and mDNS reflection rec
 
 ---
 
-# 54. Useful Diagnostic Commands
+## Useful Diagnostic Commands
 
-## Addresses
+### Addresses
 
 ```bash
 ip -br addr
 ```
 
-Review before publishing because the output contains actual production addresses.
+Review before publishing because the output contains actual deployment addresses.
 
-## IPv4 Routes
+### IPv4 Routes
 
 ```bash
 ip route
 ```
 
-## IPv6 Routes
+### IPv6 Routes
 
 ```bash
 ip -6 route
 ```
 
-## USB Devices
+### USB Devices
 
 ```bash
 lsusb
@@ -1797,7 +1797,7 @@ lsusb
 
 USB vendor/product IDs should be reviewed before publication.
 
-## USB Driver Binding
+### USB Driver Binding
 
 ```bash
 lsusb -t
@@ -1809,55 +1809,55 @@ Expected:
 Driver=rtl8xxxu
 ```
 
-## Kernel
+### Kernel
 
 ```bash
 uname -r
 ```
 
-## Wireless PHY
+### Wireless PHY
 
 ```bash
 sudo iw phy
 ```
 
-## Wireless Interfaces
+### Wireless Interfaces
 
 ```bash
 sudo iw dev
 ```
 
-## Wi-Fi Connection
+### Wi-Fi Connection
 
 ```bash
 iw dev <wifi-interface> link
 ```
 
-## Wi-Fi Service
+### Wi-Fi Service
 
 ```bash
 systemctl status wpa_supplicant-iot.service --no-pager
 ```
 
-## DHCP Service
+### DHCP Service
 
 ```bash
 systemctl status dhclient-iot.service --no-pager
 ```
 
-## Avahi Service
+### Avahi Service
 
 ```bash
 systemctl status avahi-daemon --no-pager
 ```
 
-## UDP 5353
+### UDP 5353
 
 ```bash
 ss -ulpn | grep ':5353'
 ```
 
-## All mDNS Services
+### All mDNS Services
 
 ```bash
 avahi-browse -a
@@ -1865,25 +1865,25 @@ avahi-browse -a
 
 Review device and service names before publishing the output.
 
-## Matter Operational Discovery
+### Matter Operational Discovery
 
 ```bash
 avahi-browse -rt _matter._tcp
 ```
 
-## Matter Commissioning Discovery
+### Matter Commissioning Discovery
 
 ```bash
 avahi-browse -rt _matterc._udp
 ```
 
-## All Matter mDNS Records
+### All Matter mDNS Records
 
 ```bash
 avahi-browse -art | grep -i matter
 ```
 
-## Forwarding
+### Forwarding
 
 ```bash
 sysctl net.ipv4.ip_forward
@@ -1903,7 +1903,7 @@ Validation Result: These commands independently validate addressing, routing, wi
 
 ---
 
-# 55. Troubleshooting Reference
+## Troubleshooting Reference
 
 | Symptom                                            | Root Cause                                  | Resolution                                     |
 | -------------------------------------------------- | ------------------------------------------- | ---------------------------------------------- |
@@ -1927,7 +1927,7 @@ Validation Result: Troubleshooting follows the actual Matter commissioning stage
 
 ---
 
-# 56. Adding Future Matter Wi-Fi Devices
+## Adding Future Matter Wi-Fi Devices
 
 1. Verify `vm-avahi` is running.
 2. Verify `wpa_supplicant-iot.service`.
@@ -1950,7 +1950,7 @@ Validation Result: The new Matter device remains isolated while retaining the mi
 
 ---
 
-# 57. Smart Bulb Power Behavior
+## Smart Bulb Power Behavior
 
 The physical wall switch should normally remain:
 
@@ -1973,7 +1973,7 @@ The bulb remains reachable while consuming standby power rather than full illumi
 
 ---
 
-# 58. Important Lessons
+## Important Lessons
 
 A failed Matter commissioning attempt does not automatically mean basic network connectivity is broken.
 
@@ -2025,7 +2025,7 @@ Driver functionality should therefore be validated before troubleshooting WPA cr
 
 ---
 
-# 59. Final Architecture
+## Final Verification and Architecture Summary
 
 ```text
                     FortiGate
@@ -2055,54 +2055,24 @@ NAT on reflector:   NONE
 IP forwarding:      DISABLED
 ```
 
-Final validation:
+The completed architecture preserves the FortiGate as the Layer 3 routing and security boundary while using `vm-avahi` only for controlled mDNS reflection between the Home Assistant and IoT networks.
 
-```text
-IPv4 HA network                         PASS
-IPv4 IoT network                        PASS
-IPv6 HA SLAAC                           PASS
-IPv6 IoT SLAAC                          PASS
-FortiGate IPv6 routing                  PASS
-Matter TCP/UDP 5540                     PASS
-USB Wi-Fi passthrough                   PASS
-Wireless driver                         PASS
-Automatic Wi-Fi association             PASS
-Automatic IoT DHCP                      PASS
-Avahi IPv4 mDNS                         PASS
-Avahi IPv6 mDNS                         PASS
-_matterc._udp discovery                 PASS
-_matter._tcp discovery                  PASS
-Matter commissioning                    PASS
-Matter operational reconnect            PASS
-Home Assistant device control           PASS
-```
+Matter devices remain isolated on the IoT network, Home Assistant retains routed access through explicitly controlled firewall policy, and the reflector does not provide NAT or IP forwarding.
 
-Deployment status:
-
-```text
-OPERATIONAL
-```
+Validation Result: Matter commissioning, operational discovery, reconnect, and Home Assistant device control operate successfully without flattening the segmented network.
 
 ---
 
-# 60. Related Search Keywords
+## Related Search Keywords
 
 matter, matter-over-wifi, home-assistant, haos, matter-server, mdns, avahi, dns-sd, ipv6, ula, slaac, fortigate, fortinet, proxmox, debian, network-segmentation, iot-security, home-automation
 
 ---
 
-## Distribution and Copyright
-
-Copyright (c) 2026 Fong.
-
-Permission is granted to redistribute this documentation in its original, unmodified form, provided appropriate credit is given to projectfong and a link to the projectfong GitHub page is included:
-
-https://github.com/projectfong/
-
----
-
 ## Revision Control
 
-| Version   | Date       | Summary                                                                                                                                                                                         | Author      |
-| --------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| **1.0.0** | 2026-08-20 | Sanitized publication version of the Home Assistant Matter-over-segmented-Wi-Fi deployment documentation with production network addressing and infrastructure identifiers replaced or removed. | projectfong |
+| Version   | Date       | Summary                                                                                                                                                                                        | Author      |
+| --------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| **1.0.0** | 2026-08-20 | Initial publication version of the Home Assistant Matter-over-segmented-Wi-Fi deployment documentation using standardized documentation addressing and generalized infrastructure identifiers. | projectfong |
+
+---
