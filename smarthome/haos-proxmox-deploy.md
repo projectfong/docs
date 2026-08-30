@@ -1416,30 +1416,7 @@ The Home Assistant application backup and Proxmox VM backup serve different reco
 
 # Related Search Keywords
 
-**Home Assistant OS** HAOS
-**HAOS 18.2** Home Assistant OS 18.2
-**Home Assistant 2026.8.2** Home Assistant Core
-**Proxmox HAOS** Home Assistant Proxmox
-**KVM Proxmox QCOW2** HAOS QCOW2
-**qm importdisk** Proxmox disk import
-**OVMF** UEFI Proxmox HAOS
-**VirtIO SCSI** Proxmox SCSI controller
-**HAOS static IP** Home Assistant static IPv4
-**ha network** Home Assistant CLI networking
-**Home Assistant backup restore** Home Assistant migration
-**Home Assistant Container to HAOS** Docker migration
-**Proxmox Home Assistant VM** HAOS virtualization
-**Home Assistant rollback** HAOS migration rollback
-
----
-
-## Distribution and Copyright
-
-Copyright (c) 2026 Fong.
-
-Permission is granted to redistribute this documentation in its original, unmodified form, provided appropriate credit is given to projectfong and a link to the projectfong GitHub page is included:
-
-https://github.com/projectfong/
+home-assistant, home-assistant-os, haos, proxmox, kvm, qcow2, qm-importdisk, ovmf, uefi, virtio-scsi, static-ip, ha-cli, backup-restore, migration, docker-to-haos, virtualization, rollback
 
 ---
 
