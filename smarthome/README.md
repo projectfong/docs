@@ -18,9 +18,3 @@ The `smarthome/` directory contains implementation, integration, troubleshooting
 
 * [Echo Dot 2 Voice Satellite](https://github.com/projectfong/docs/blob/main/smarthome/echomuse-echodot2-haos.md) - Documents repurposing an Amazon Echo Dot 2 as an EchoMuse-based local Home Assistant voice satellite.
 * [Echo Dot 2 Wi-Fi Disconnect Root Cause Analysis](https://github.com/projectfong/docs/blob/main/smarthome/echomuse-wifi-disconnect-investigation.md) - Documents investigation of recurring EchoMuse disconnects and identifies the Fire OS `WifiDiagsUtil` network-bounce mechanism as the primary recurring Wi-Fi interruption source.
-
-The complete Smart Home documentation directory is available at:
-
-https://github.com/projectfong/docs/tree/main/smarthome
-
-Validation Result: The Smart Home documentation index provides direct links to the completed Home Assistant, Matter, Thread, ESPHome, device-integration, and EchoMuse guides maintained under `smarthome/`.
