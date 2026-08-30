@@ -2087,19 +2087,7 @@ OPERATIONAL
 
 # 60. Related Search Keywords
 
-**Matter** Matter-over-Wi-Fi, Matter commissioning, Matter operational discovery, Matter Server, Matter TCP 5540, Matter UDP 5540
-
-**Home Assistant** Home Assistant OS, HAOS, Home Assistant Matter Server, Home Assistant segmented network
-
-**mDNS** Avahi, Avahi reflector, mDNS reflector, DNS-SD, `_matter._tcp`, `_matterc._udp`, UDP 5353
-
-**IPv6** ULA, SLAAC, Router Advertisement, IPv6 segmentation, Matter IPv6
-
-**FortiGate** FortiGate IPv6, FortiAP client isolation, intra-SSID isolation, firewall segmentation
-
-**Linux** Debian 12, Bookworm backports, `rtl8xxxu`, `wpa_supplicant`, `dhclient`, systemd
-
-**Proxmox** USB passthrough, dual-homed VM, isolated IoT network
+matter, matter-over-wifi, home-assistant, haos, matter-server, mdns, avahi, dns-sd, ipv6, ula, slaac, fortigate, fortinet, proxmox, debian, network-segmentation, iot-security, home-automation
 
 ---
 
