@@ -2077,23 +2077,9 @@ If every applicable test passes after TP-Link ID deletion, the deployment can be
 
 ---
 
-## Search Keywords
+## Related Search Keywords
 
-### TP-Link Tapo H100
-
-**TP-Link Tapo H100**, **Tapo H100 Home Assistant**, **Tapo H100 Home Assistant OS**, **Tapo H100 local control**, **Tapo H100 without cloud**, **Tapo H100 without Internet**, **Tapo H100 TP-Link Smart Home**, **Tapo H100 local polling**, **Tapo H100 IoT network**, **Tapo H100 firewall**, **Tapo H100 blocked Internet**, **Tapo H100 failed onboarding**, **Tapo H100 no devices in Tapo app**, **Tapo H100 Home Assistant chime**, **Tapo H100 doorbell chime**, **Tapo H100 siren Home Assistant**, **Tapo H100 one second chime**, **Tapo H100 account deletion**, **TP-Link ID deletion**
-
-### GoveeLife B5122 / H5122
-
-**GoveeLife Wireless Mini Smart Button**, **GoveeLife B5122**, **Govee H5122**, **Govee Bluetooth H5122**, **GoveeLife button Home Assistant**, **GoveeLife button Home Assistant OS**, **GoveeLife doorbell Home Assistant**, **GoveeLife button event Home Assistant**, **GoveeLife Bluetooth button**, **GoveeLife H5122 weatherproof**, **GoveeLife B5122 weather resistance**, **GoveeLife button protected installation**
-
-### ESPHome Bluetooth Proxy
-
-**ESPHome Bluetooth Proxy**, **ESP32 Bluetooth Proxy**, **Home Assistant Bluetooth Proxy**, **Govee ESPHome Bluetooth Proxy**, **ESP32 Govee Bluetooth**, **distributed Bluetooth Home Assistant**
-
-### Home Assistant Doorbell
-
-**Home Assistant wireless doorbell button**, **Home Assistant custom doorbell**, **Home Assistant local doorbell**, **Home Assistant cross-vendor doorbell**, **Home Assistant doorbell automation**, **Home Assistant siren doorbell**, **Home Assistant inexpensive doorbell**, **Home Assistant doorbell without camera**, **local smart doorbell without cloud**
+home-assistant, tapo-h100, goveelife-b5122, govee-h5122, esphome, bluetooth-proxy, esp32, smart-doorbell, local-control, smart-home, home-automation, iot-security
 
 ---
 
