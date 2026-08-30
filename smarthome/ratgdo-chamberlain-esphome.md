@@ -439,27 +439,7 @@ The ESPHome-flashed hardware documented in this guide is separate from the HomeK
 
 ## Related Search Keywords
 
-**ratgdo** garage door controller
-**ratgdo v2.5**
-**ratgdo ESPHome**
-**Chamberlain ratgdo**
-**Chamberlain Security+ 2.0**
-**Home Assistant garage door**
-**ESPHome garage door**
-**ratgdo WHT GND**
-**ratgdo RED CTRL**
-**ratgdo BLK OBST**
-**Chamberlain local garage door control**
-
----
-
-## Distribution and Copyright
-
-Copyright (c) 2026 Fong.
-
-Permission is granted to redistribute this documentation in its original, unmodified form, provided appropriate credit is given to projectfong and a link to the projectfong GitHub page is included:
-
-https://github.com/projectfong/
+ratgdo, garage-door-controller, ratgdo-v2-5, esphome, chamberlain, security-plus-2-0, home-assistant, local-control, smart-garage, home-automation
 
 ---
 
