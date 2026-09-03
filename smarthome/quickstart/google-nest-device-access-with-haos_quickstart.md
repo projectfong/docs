@@ -1,0 +1,546 @@
+# Google Nest Device Access with Home Assistant OS - Quickstart
+
+Author: projectfong  
+Copyright (c) 2026 Fong
+
+---
+
+## Summary
+
+Connect Google Nest cameras and thermostats to Home Assistant OS (HAOS) using Google Nest Device Access, the Smart Device Management API, OAuth, and Google Cloud Pub/Sub.
+
+Estimated time:
+
+```text
+30-60 minutes
+```
+
+## Requirements
+
+Before starting:
+
+- Home Assistant OS with Internet access.
+- Google account that manages the Nest devices.
+- Google Cloud access.
+- Google Nest Device Access registration.
+- Browser access to the local Home Assistant instance.
+- Payment method for the Google Device Access registration fee.
+
+The browser completing OAuth must be able to reach Home Assistant.
+
+For segmented networks, prefer a locally resolvable FQDN:
+
+```text
+http://<haos-fqdn>:8123
+```
+
+Do not rely on:
+
+```text
+http://homeassistant.local:8123
+```
+
+unless mDNS works from the browser network.
+
+## Quick Setup
+
+### 1. Start the Nest Integration
+
+In Home Assistant:
+
+```text
+Settings
+-> Devices & services
+-> Add Integration
+-> Nest
+```
+
+Keep the Home Assistant setup dialog open and use the Google links it provides.
+
+### 2. Create the Google Cloud Project
+
+Create a dedicated Google Cloud project.
+
+Example:
+
+```text
+Project name:
+HAOS NEST
+```
+
+Record the generated:
+
+```text
+Google Cloud Project ID
+```
+
+Do not confuse this with the Nest Device Access Project ID created later.
+
+### 3. Enable Required APIs
+
+Using the links provided by Home Assistant, enable:
+
+```text
+Smart Device Management API
+Cloud Pub/Sub API
+```
+
+No additional Google Cloud Hub APIs are required.
+
+### 4. Configure Google OAuth
+
+Configure Google Auth Platform:
+
+```text
+App name:
+HAOS NEST
+
+Audience:
+External
+
+Publishing status:
+Testing
+```
+
+Add the Google account managing the Nest devices as a test user:
+
+```text
+Google Auth Platform
+-> Audience
+-> Test users
+```
+
+### 5. Create the OAuth Client
+
+Create an OAuth client with:
+
+```text
+Application type:
+Web application
+
+Name:
+HAOS NEST
+```
+
+Leave Authorized JavaScript origins empty.
+
+Configure the Authorized Redirect URI:
+
+```text
+https://my.home-assistant.io/redirect/oauth
+```
+
+Record securely:
+
+```text
+OAuth Client ID
+OAuth Client Secret
+```
+
+Never publish the OAuth Client Secret or downloaded OAuth credential JSON.
+
+### 6. Add OAuth Credentials to Home Assistant
+
+Return to the Home Assistant Nest setup.
+
+Enter:
+
+```text
+Name:
+HAOS NEST
+
+OAuth client ID:
+<REDACTED>
+
+OAuth client secret:
+<REDACTED>
+```
+
+Select:
+
+```text
+Add
+```
+
+When prompted for the Google Cloud Project ID, enter the generated project ID.
+
+Example format:
+
+```text
+haos-nest-123456
+```
+
+Do not enter the project display name.
+
+### 7. Create the Nest Device Access Project
+
+Follow the Device Access Console link provided by Home Assistant.
+
+Complete the required Device Access registration if the account has not previously been registered.
+
+Create a Device Access project:
+
+```text
+Project name:
+HAOS NEST
+```
+
+When requested, enter the OAuth Client ID created earlier.
+
+Do not enter the OAuth Client Secret.
+
+During initial project creation, leave:
+
+```text
+Enable events:
+Unchecked
+```
+
+Home Assistant will create the required Pub/Sub topic later.
+
+### 8. Add the Device Access Project ID
+
+Record the generated:
+
+```text
+Device Access Project ID
+```
+
+Return to Home Assistant and enter it when requested.
+
+The two identifiers are different:
+
+```text
+Google Cloud Project ID
+!=
+Device Access Project ID
+```
+
+### 9. Authorize Nest Devices
+
+Authorize Home Assistant to access the Nest home.
+
+Select only the devices and capabilities required.
+
+Example camera permissions:
+
+```text
+Livestream
+Camera events
+Camera snapshots
+```
+
+Example thermostat permission:
+
+```text
+Access and control
+```
+
+Approve the required Google permissions for:
+
+```text
+Selected Nest devices
+Pub/Sub topics and subscriptions
+```
+
+### 10. Verify the Home Assistant Callback
+
+Before selecting:
+
+```text
+Link account
+```
+
+verify that the browser can reach Home Assistant.
+
+Example:
+
+```text
+http://<haos-fqdn>:8123
+```
+
+For segmented networks, the browser network must have:
+
+```text
+DNS resolution to HAOS
+Routing to HAOS
+TCP/8123 access to HAOS
+```
+
+Google does not require inbound access to the local Home Assistant hostname.
+
+### 11. Link the Google Account
+
+Select:
+
+```text
+Link account
+```
+
+Complete Google authorization.
+
+The browser should return to the local Home Assistant instance.
+
+### 12. Create the Pub/Sub Topic
+
+When Home Assistant displays:
+
+```text
+Configure Cloud Pub/Sub topic
+```
+
+leave:
+
+```text
+Create new topic
+```
+
+selected and submit.
+
+Home Assistant generates a topic similar to:
+
+```text
+projects/<google-cloud-project-id>/topics/home-assistant-<generated-value>
+```
+
+Copy the complete generated topic path.
+
+Do not manually create or guess the generated suffix.
+
+### 13. Enable Nest Events
+
+Return to:
+
+```text
+Device Access Console
+-> HAOS NEST
+-> Events
+```
+
+Enable events.
+
+Paste the Pub/Sub topic generated by Home Assistant.
+
+Select:
+
+```text
+Add & validate
+```
+
+Google should successfully validate the topic.
+
+### 14. Create the Pub/Sub Subscription
+
+Return to Home Assistant.
+
+When prompted for the subscription, leave:
+
+```text
+Create new subscription
+```
+
+selected.
+
+Select:
+
+```text
+Submit
+```
+
+Home Assistant creates the subscription used to receive Nest events.
+
+### 15. Finish Device Setup
+
+Home Assistant should report:
+
+```text
+Successfully authenticated
+```
+
+Assign discovered devices to the appropriate Home Assistant areas and select:
+
+```text
+Finish
+```
+
+## Validate
+
+Open:
+
+```text
+Settings
+-> Devices & services
+-> Google Nest
+```
+
+Confirm the expected Nest devices are present.
+
+For cameras, validate:
+
+```text
+Camera entity exists
+Livestream loads
+Supported events are received
+Supported snapshots are available
+```
+
+For thermostats, validate:
+
+```text
+Current temperature is available
+Thermostat state is available
+Configured setpoint is available
+Climate control works
+```
+
+## Network Requirements
+
+The Nest integration requires Internet access because Home Assistant communicates with Nest through Google's cloud services.
+
+The primary communication path is:
+
+```text
+Nest Devices
+     |
+     v
+Google Nest Cloud
+     |
+     v
+Smart Device Management API
+     |
+     +---------------------+
+     |                     |
+     v                     v
+Device State          Device Events
+and Control                |
+     |                     v
+     |              Google Cloud Pub/Sub
+     |                     |
+     +----------+----------+
+                |
+                v
+        Home Assistant OS
+```
+
+For the OAuth callback, the browser performing authorization must also be able to reach the local Home Assistant instance:
+
+```text
+Browser
+   |
+   | TCP/8123 or configured HTTPS endpoint
+   v
+Home Assistant OS
+```
+
+Do not flatten network segmentation to complete OAuth.
+
+Use local DNS, routing, and explicit firewall policy instead.
+
+## Common Problems
+
+### OAuth Access Blocked
+
+If Google reports:
+
+```text
+Access blocked
+```
+
+verify the Google account has been added under:
+
+```text
+Google Auth Platform
+-> Audience
+-> Test users
+```
+
+### Browser Cannot Reach homeassistant.local
+
+If the OAuth callback cannot reach:
+
+```text
+http://homeassistant.local:8123
+```
+
+use a browser-reachable local FQDN:
+
+```text
+http://<haos-fqdn>:8123
+```
+
+or a reachable HAOS IP address.
+
+Verify the address from the same browser before restarting OAuth.
+
+### Pub/Sub Events Are Disabled
+
+This is expected during initial Device Access creation.
+
+The correct order is:
+
+```text
+Create Device Access project
+-> Leave events disabled
+-> Continue Home Assistant setup
+-> Let Home Assistant create Pub/Sub topic
+-> Copy generated topic
+-> Enable Device Access events
+-> Add and validate topic
+-> Let Home Assistant create subscription
+```
+
+### Project IDs Are Rejected
+
+Verify that the correct identifier is being entered.
+
+```text
+Google Cloud Project ID
+-> Google Cloud APIs, OAuth association, Pub/Sub
+
+Device Access Project ID
+-> Nest Device Access
+```
+
+They are not interchangeable.
+
+## Security Notes
+
+Protect:
+
+```text
+OAuth Client Secret
+OAuth credential JSON
+Access tokens
+Refresh tokens
+Authorization codes
+```
+
+Do not publish these values in:
+
+```text
+Git repositories
+Public documentation
+Screenshots
+Issue trackers
+Chat logs
+```
+
+Authorize only the Nest devices and capabilities required by Home Assistant.
+
+Network segmentation can remain intact. Google does not require inbound access to the local Home Assistant instance.
+
+## Full Documentation
+
+This quickstart intentionally omits the detailed architecture, implementation history, OAuth explanation, Pub/Sub internals, extended troubleshooting, security discussion, and automation examples.
+
+See the full Google Nest Device Access with Home Assistant OS documentation for those details.
+
+## Related Search Keywords
+
+home-assistant, google-nest, haos, nest-device-access, sdm-api, google-cloud-pubsub, oauth2, nest-camera, nest-thermostat, segmented-network
+
+## Revision Control
+
+| Version | Date | Summary | Author |
+| -------- | ---- | ------- | ------ |
+| **1.0.0** | 2026-08-31 | Initial Google Nest Device Access with Home Assistant OS quickstart. | projectfong |
