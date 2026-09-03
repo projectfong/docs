@@ -5,6 +5,7 @@ The `smarthome/quickstart/` directory contains condensed deployment and configur
 ## Home Assistant and Network Architecture
 
 * [Home Assistant OS on Proxmox](haos-proxmox-deploy_quickstart.md) - Quick deployment of Home Assistant OS as a virtual machine on Proxmox VE.
+* [Home Assistant OS Proxmox VM to Bare Metal Migration](haos-pvevm-to-baremetal_quickstart.md) - Quick migration of Home Assistant OS from a Proxmox VE virtual machine to dedicated bare-metal hardware.
 * [Matter over Segmented Wi-Fi](ha-matter-segmented-network_quickstart.md) - Quick configuration of Matter across segmented Home Assistant and IoT networks.
 * [Aqara H2 Matter-over-Thread](aqara-h2-haos-mot_quickstart.md) - Quick deployment of the Aqara Light Switch H2 US using Matter-over-Thread and an external OpenThread Border Router.
 * [Home Assistant External SSH](haos-ssh-external-access_quickstart.md) - Quick configuration of direct external SSH access to Home Assistant OS.
