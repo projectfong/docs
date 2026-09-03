@@ -36,19 +36,19 @@ This procedure also provides a repeatable validation method for distinguishing a
 
 The following values were observed during troubleshooting.
 
-| Component | Configuration | Notes |
-| --- | --- | --- |
-| Platform | Home Assistant OS | Existing HAOS deployment |
-| HAOS address | `<HAOS_IP>` | Address used during testing |
-| Application | `Terminal & SSH` | Home Assistant application providing terminal and SSH access |
-| Web Terminal | Working | Accessible through Home Assistant ingress |
-| External SSH | Initially unavailable | SSH client could not connect |
-| SSH port | `22/tcp` | External port configured during troubleshooting |
-| Test workstation | Windows | PowerShell used for network validation |
-| ICMP connectivity | Working | HAOS responded with approximately 1 ms latency |
-| TCP/22 connectivity | Initially failed | `TcpTestSucceeded : False` |
-| Authentication | Password configured | Used in the isolated administrative environment |
-| Network configuration | Separate application section | Required its own Save operation |
+| Component             | Configuration             | Notes                                                          |
+| --------------------- | ------------------------- | -------------------------------------------------------------- |
+| Platform              | Home Assistant OS         | Existing HAOS deployment                                       |
+| HAOS address          | `<HAOS_IP>`               | Address used during testing                                    |
+| Application           | `Terminal & SSH`          | Home Assistant application providing terminal and SSH access   |
+| Web Terminal          | Working                   | Accessible through Home Assistant ingress                      |
+| External SSH          | Initially unavailable     | SSH client could not connect                                   |
+| SSH port              | `22/tcp`                  | External port configured during troubleshooting                |
+| Test workstation      | Windows                   | PowerShell used for network validation                         |
+| ICMP connectivity     | Working                   | HAOS responded with approximately 1 ms latency                 |
+| TCP/22 connectivity   | Initially failed          | `TcpTestSucceeded : False`                                     |
+| Authentication        | Password configured       | Used in the isolated administrative environment                |
+| Network configuration | Separate application section | Required its own Save operation                             |
 
 **Validation Result:** HAOS was reachable from the administrative workstation before external SSH was enabled.
 
