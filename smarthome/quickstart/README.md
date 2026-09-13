@@ -9,6 +9,7 @@ The `smarthome/quickstart/` directory contains condensed deployment and configur
 * [Matter over Segmented Wi-Fi](ha-matter-segmented-network_quickstart.md) - Quick configuration of Matter across segmented Home Assistant and IoT networks.
 * [Aqara H2 Matter-over-Thread](aqara-h2-haos-mot_quickstart.md) - Quick deployment of the Aqara Light Switch H2 US using Matter-over-Thread and an external OpenThread Border Router.
 * [Home Assistant External SSH](haos-ssh-external-access_quickstart.md) - Quick configuration of direct external SSH access to Home Assistant OS.
+* [Google Nest Thermostat GA02081-US Matter Quickstart](nest-ga02081us-matter-quickstart.md) - Quick deployment and configuration guide for connecting the Google Nest Thermostat GA02081-US to Home Assistant using Matter in a restricted network.
 
 ## ESPHome and Local Device Integrations
 
@@ -22,6 +23,7 @@ The `smarthome/quickstart/` directory contains condensed deployment and configur
 
 ## Revision Control
 
-| Version   | Date       | Summary                                         | Author      |
-| --------- | ---------- | ----------------------------------------------- | ----------- |
-| **1.0.0** | 2026-09-02 | Initial Smart Home Quickstarts directory index. | projectfong |
+| Version   | Date       | Summary                                                 | Author      |
+| --------- | ---------- | ------------------------------------------------------- | ----------- |
+| **1.0.0** | 2026-09-02 | Initial Smart Home Quickstarts directory index.         | projectfong |
+| **1.1.0** | 2026-09-13 | Added Google Nest Thermostat GA02081-US Matter quickstart. | projectfong |
