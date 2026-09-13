@@ -11,6 +11,7 @@ For condensed deployment procedures, see the [Quickstart Guides](quickstart/).
 * [Home Assistant OS External SSH Access](haos-ssh-external-access.md) - Documents configuration and validation of direct external SSH access to Home Assistant OS.
 * [Matter over Segmented Wi-Fi](ha-matter-segmented-network.md) - Documents Matter operation across segmented Home Assistant and IoT networks, including routing, firewall policy, mDNS, and validation.
 * [Aqara H2 Matter-over-Thread](aqara-h2-haos-mot.md) - Documents installation and local Home Assistant integration of the Aqara Light Switch H2 US using Matter-over-Thread in a segmented network.
+* [Google Nest Thermostat GA02081-US Matter Setup and Testing](nest-ga02081us-matter.md) - Documents implementation, Matter commissioning, local Home Assistant integration, network testing, Internet dependency testing, Google Home removal behavior, and recommissioning requirements for the Google Nest Thermostat GA02081-US.
 
 ### ESPHome and Local Device Integrations
 
@@ -28,3 +29,4 @@ For condensed deployment procedures, see the [Quickstart Guides](quickstart/).
 | Version   | Date       | Summary                                                                                                 | Author      |
 | --------- | ---------- | ------------------------------------------------------------------------------------------------------- | ----------- |
 | **1.0.0** | 2026-09-02 | Updated documentation index with quickstart, HAOS bare-metal migration, and external SSH documentation. | projectfong |
+| **1.1.0** | 2026-09-13 | Added Google Nest Thermostat GA02081-US Matter setup, testing, and migration documentation.             | projectfong |
